@@ -15,6 +15,8 @@ const nextConfig = {
       },
     ],
   },
+  // 添加以下配置，避免在静态导出时出现问题
+  trailingSlash: true,
 };
 
 export default nextConfig;
