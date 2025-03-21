@@ -11,7 +11,7 @@ export default function Roadmap() {
           <div className="bg-toby-darkbg rounded-lg overflow-hidden">
             <div className="relative aspect-square">
               <img
-                src="/images/6.png"
+                src="/BOLD/images/6.png"
                 alt="BOLD's Story"
                 className="w-full h-full object-cover"
               />
@@ -53,7 +53,7 @@ export default function Roadmap() {
           <div className="bg-toby-darkbg rounded-lg overflow-hidden">
             <div className="relative aspect-square">
               <img
-                src="/images/7.png"
+                src="/BOLD/images/7.png"
                 alt="BOLD's Road Map from the Trenches"
                 className="w-full h-full object-cover"
               />
@@ -89,7 +89,7 @@ export default function Roadmap() {
           <div className="bg-toby-darkbg rounded-lg overflow-hidden">
             <div className="relative aspect-square">
               <img
-                src="/images/8.png"
+                src="/BOLD/images/8.png"
                 alt="Road map continued for after pumps"
                 className="w-full h-full object-cover"
               />

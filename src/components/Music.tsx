@@ -25,7 +25,7 @@ export default function Music() {
             <div className="bg-gray-900 rounded-md overflow-hidden">
               <div className="relative aspect-video">
                 <img
-                  src="/images/9.png"
+                  src="/BOLD/images/9.png"
                   alt="Shell Shocked Album Cover"
                   className="w-full h-auto"
                 />

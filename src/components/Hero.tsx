@@ -35,7 +35,7 @@ export default function Hero() {
           <div className="w-full max-w-xs relative aspect-square animate-scale-in delay-300">
             <div className="absolute w-[110%] h-[110%] top-[-5%] left-[-5%] rounded-full bg-toby-green-500/10 animate-pulse"></div>
             <Image
-              src="/images/1.png"
+              src="/BOLD/images/1.png"
               alt="BOLD the Turtle"
               fill
               sizes="(max-width: 768px) 100vw, 300px"

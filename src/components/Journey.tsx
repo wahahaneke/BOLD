@@ -5,47 +5,47 @@ import Image from "next/image";
 
 const journeyImages = [
   {
-    src: "/images/1.png",
+    src: "/BOLD/images/1.png",
     alt: "Journey image 1"
   },
   {
-    src: "/images/2.png",
+    src: "/BOLD/images/2.png",
     alt: "Journey image 2"
   },
   {
-    src: "/images/3.png",
+    src: "/BOLD/images/3.png",
     alt: "Journey image 3"
   },
   {
-    src: "/images/4.png",
+    src: "/BOLD/images/4.png",
     alt: "Journey image 4"
   },
   {
-    src: "/images/5.png",
+    src: "/BOLD/images/5.png",
     alt: "Journey image 5"
   },
   {
-    src: "/images/6.png",
+    src: "/BOLD/images/6.png",
     alt: "Journey image 6"
   },
   {
-    src: "/images/7.png",
+    src: "/BOLD/images/7.png",
     alt: "Journey image 7"
   },
   {
-    src: "/images/8.png",
+    src: "/BOLD/images/8.png",
     alt: "Journey image 8"
   },
   {
-    src: "/images/9.png",
+    src: "/BOLD/images/9.png",
     alt: "Journey image 9"
   },
   {
-    src: "/images/10.png",
+    src: "/BOLD/images/10.png",
     alt: "Journey image 10"
   },
   {
-    src: "/images/11.png",
+    src: "/BOLD/images/11.png",
     alt: "Journey image 11"
   }
   // 如有更多图片，可继续添加
