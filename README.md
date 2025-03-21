@@ -65,11 +65,18 @@ npm run dev
 
 ## 部署
 
-该项目配置了GitHub Actions工作流，可自动部署到GitHub Pages：
+该项目配置为静态网站，可以手动部署到GitHub Pages：
 
-1. 对main分支的任何推送都会触发部署
-2. 构建结果会自动部署到gh-pages分支
-3. 网站在 https://wahahaneke.github.io/BOLD/ 上可用
+1. 构建项目：
+```bash
+npm run build
+```
+
+2. 生成的`out`目录包含静态文件，可以部署到任何静态网站托管服务
+
+3. 对于GitHub Pages，可以将`out`目录内容推送到gh-pages分支
+
+4. 网站在 https://wahahaneke.github.io/BOLD/ 上可用
 
 ## 许可证
 
