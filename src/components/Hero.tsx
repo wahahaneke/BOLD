@@ -59,30 +59,66 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* 移动端优化的按钮布局 */}
-        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-8 sm:mt-10 animate-fade-up delay-400">
-          <Link href="https://t.me/tobyportalxyz" target="_blank" className="w-full sm:w-auto">
-            <Button variant="outline" size="lg" className="w-full py-3 sm:py-4 text-base">
-              TELEGRAM
-            </Button>
-          </Link>
-          <Link href="https://dexscreener.com/solana/8bjikkzel672yumyoznuda66aj4t8wjczk4pblmvucuu" target="_blank" className="w-full sm:w-auto">
-            <Button variant="secondary" size="lg" className="w-full py-3 sm:py-4 text-base">
-              DEXSCREENER
-            </Button>
-          </Link>
-        </div>
-        
-        {/* Twitter按钮 - 移到按钮组内 */}
-        <div className="flex justify-center mt-5 sm:mt-8 animate-fade-up delay-500">
-          <Link href="https://twitter.com/boldsolana" target="_blank">
-            <Button variant="outline" size="icon" className="rounded-full w-12 h-12 bg-transparent border border-white text-white hover:bg-gray-800 hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-              </svg>
-              <span className="sr-only">Twitter</span>
-            </Button>
-          </Link>
+        {/* 按钮布局 - 根据用户标记的位置调整 */}
+        <div className="relative mt-8 sm:mt-10 animate-fade-up delay-400">
+          {/* 移动端布局 */}
+          <div className="sm:hidden">
+            {/* Telegram按钮 - 左上角 */}
+            <div className="absolute left-0 top-0 w-[45%]">
+              <Link href="https://t.me/tobyportalxyz" target="_blank" className="w-full">
+                <Button variant="outline" size="lg" className="w-full py-3 text-base">
+                  TELEGRAM
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Twitter按钮 - 右下角 */}
+            <div className="absolute right-0 bottom-24">
+              <Link href="https://twitter.com/boldsolana" target="_blank">
+                <Button variant="outline" size="icon" className="rounded-full w-14 h-14 bg-transparent border border-white text-white hover:bg-gray-800 hover:text-white transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                  </svg>
+                  <span className="sr-only">Twitter</span>
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Dexscreener按钮 - 下方居中 */}
+            <div className="pt-24 pb-16 flex justify-center">
+              <Link href="https://dexscreener.com/solana/8bjikkzel672yumyoznuda66aj4t8wjczk4pblmvucuu" target="_blank" className="w-[60%]">
+                <Button variant="secondary" size="lg" className="w-full py-3 text-base">
+                  DEXSCREENER
+                </Button>
+              </Link>
+            </div>
+          </div>
+          
+          {/* 桌面端布局保持不变 */}
+          <div className="hidden sm:flex flex-row justify-center gap-4">
+            <Link href="https://t.me/tobyportalxyz" target="_blank" className="w-auto">
+              <Button variant="outline" size="lg" className="py-4 text-base">
+                TELEGRAM
+              </Button>
+            </Link>
+            <Link href="https://dexscreener.com/solana/8bjikkzel672yumyoznuda66aj4t8wjczk4pblmvucuu" target="_blank" className="w-auto">
+              <Button variant="secondary" size="lg" className="py-4 text-base">
+                DEXSCREENER
+              </Button>
+            </Link>
+          </div>
+          
+          {/* Twitter按钮 - 桌面端 */}
+          <div className="hidden sm:flex justify-center mt-8 animate-fade-up delay-500">
+            <Link href="https://twitter.com/boldsolana" target="_blank">
+              <Button variant="outline" size="icon" className="rounded-full w-12 h-12 bg-transparent border border-white text-white hover:bg-gray-800 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                </svg>
+                <span className="sr-only">Twitter</span>
+              </Button>
+            </Link>
+          </div>
         </div>
         
         {/* Contract Address Display - 移动端优化 */}
