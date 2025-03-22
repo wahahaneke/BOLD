@@ -87,21 +87,19 @@
   
   /* 上移渐入动画 */
   .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
   }
   
   .fade-up-active {
     opacity: 1;
-    transform: translateY(0);
   }
   
   /* 缩放渐入动画 */
   .animate-scale-in {
+    animation: scaleIn 0.8s ease-out forwards;
     opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transform: scale(0.9);
   }
   
   .scale-in-active {
@@ -115,19 +113,45 @@
   }
   
   .delay-200 {
-    transition-delay: 0.2s;
+    animation-delay: 200ms;
   }
   
   .delay-300 {
-    transition-delay: 0.3s;
+    animation-delay: 300ms;
   }
   
   .delay-400 {
-    transition-delay: 0.4s;
+    animation-delay: 400ms;
   }
   
   .delay-500 {
-    transition-delay: 0.5s;
+    animation-delay: 500ms;
+  }
+  
+  .delay-600 {
+    animation-delay: 600ms;
+  }
+  
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 }
 
@@ -171,12 +195,12 @@ a {
 
 /* 隐藏滚动条但保持滚动功能 */
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari and Opera */
+  display: none;
 }
 
 /* 轮播图增强样式 */
@@ -192,4 +216,76 @@ a {
   box-shadow: 0 0 0 3px #55b175, 0 0 15px rgba(85, 177, 117, 0.5);
   transform: scale(1.1);
   z-index: 10;
+}
+
+/* 移动端布局优化 */
+@media (max-width: 640px) {
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  body {
+    position: relative;
+  }
+  
+  /* 图片加载优化 */
+  img {
+    transition: opacity 0.3s ease;
+  }
+  
+  img.loading {
+    opacity: 0;
+  }
+  
+  img.loaded {
+    opacity: 1;
+  }
+  
+  /* 按钮组样式优化 */
+  .button-group-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .button-group-mobile button,
+  .button-group-mobile a {
+    width: 100%;
+  }
+  
+  /* 轮播图优化 */
+  .carousel-container {
+    position: relative;
+    touch-action: pan-y;
+  }
+  
+  /* 改进的触摸滑动区域 */
+  .swipe-area {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 5;
+  }
+  
+  /* 加载状态优化 */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
 }

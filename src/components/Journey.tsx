@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 
 const journeyImages = [
@@ -60,6 +60,31 @@ export default function Journey() {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [lastMouseX, setLastMouseX] = useState(0);
   const [mouseMoveDirection, setMouseMoveDirection] = useState<'left' | 'right' | null>(null);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
+  const [visibleImages, setVisibleImages] = useState<number[]>([]);
+
+  // 预加载当前、前一张和后一张图片
+  useEffect(() => {
+    const prevIndex = (currentIndex - 1 + journeyImages.length) % journeyImages.length;
+    const nextIndex = (currentIndex + 1) % journeyImages.length;
+    
+    setVisibleImages([prevIndex, currentIndex, nextIndex]);
+    
+    // 预加载更多图片
+    const timer = setTimeout(() => {
+      const nextTwo = (currentIndex + 2) % journeyImages.length;
+      const prevTwo = (currentIndex - 2 + journeyImages.length) % journeyImages.length;
+      setVisibleImages(prev => [...new Set([...prev, prevTwo, nextTwo])]);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [currentIndex]);
+
+  // 标记图片加载状态
+  const handleImageLoad = useCallback((index: number) => {
+    setImageLoaded(prev => ({ ...prev, [index]: true }));
+  }, []);
 
   // Auto-advance the slider every 5 seconds, but only if not hovering
   useEffect(() => {
@@ -160,6 +185,32 @@ export default function Journey() {
     }
   };
 
+  // 处理触摸滑动事件
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartX) return;
+    
+    const touchX = e.touches[0].clientX;
+    const diff = touchStartX - touchX;
+    
+    // 如果滑动距离超过50px，则切换图片
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+      setTouchStartX(0);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStartX(0);
+  };
+
   // 确保当前选中的缩略图在可视区域内
   useEffect(() => {
     if (thumbnailsRef.current) {
@@ -175,9 +226,9 @@ export default function Journey() {
   }, [currentIndex]);
 
   return (
-    <div className="bg-toby-darkbg py-16 px-4">
+    <div className="bg-toby-darkbg py-12 md:py-16 px-4">
       <div className="container mx-auto">
-        <h2 className="text-center text-white font-archivo text-3xl md:text-4xl mb-12">
+        <h2 className="text-center text-white font-archivo text-3xl md:text-4xl mb-8 md:mb-12">
           BOLD&apos;S JOURNEY
         </h2>
 
@@ -188,35 +239,60 @@ export default function Journey() {
         >
           {/* Side image previews - 左侧和右侧的预览图片 */}
           <div className="hidden md:block absolute top-1/2 -left-16 transform -translate-y-1/2 w-32 h-32 overflow-hidden opacity-30 rounded-lg z-0 blur-[1px]">
-            <img
-              src={journeyImages[(currentIndex - 1 + journeyImages.length) % journeyImages.length].src}
-              alt="Previous image"
-              className="w-full h-full object-cover"
-            />
+            <div className="w-full h-full bg-gray-800 relative">
+              {visibleImages.includes((currentIndex - 1 + journeyImages.length) % journeyImages.length) && (
+                <img
+                  src={journeyImages[(currentIndex - 1 + journeyImages.length) % journeyImages.length].src}
+                  alt="Previous image"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              )}
+            </div>
           </div>
           
           <div className="hidden md:block absolute top-1/2 -right-16 transform -translate-y-1/2 w-32 h-32 overflow-hidden opacity-30 rounded-lg z-0 blur-[1px]">
-            <img
-              src={journeyImages[(currentIndex + 1) % journeyImages.length].src}
-              alt="Next image"
-              className="w-full h-full object-cover"
-            />
+            <div className="w-full h-full bg-gray-800 relative">
+              {visibleImages.includes((currentIndex + 1) % journeyImages.length) && (
+                <img
+                  src={journeyImages[(currentIndex + 1) % journeyImages.length].src}
+                  alt="Next image"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              )}
+            </div>
           </div>
 
           {/* Main image carousel - 主轮播图 */}
-          <div className="relative overflow-hidden aspect-[16/9] rounded-lg bg-black shadow-2xl image-gallery">
+          <div 
+            className="relative overflow-hidden aspect-[16/9] rounded-lg bg-black shadow-2xl image-gallery"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {journeyImages.map((image, index) => (
               <div
                 key={index}
                 className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out ${
                   index === currentIndex ? "opacity-100" : "opacity-0 pointer-events-none"
                 }`}
+                style={{ display: visibleImages.includes(index) ? 'block' : 'none' }}
               >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-contain"
-                />
+                {!imageLoaded[index] && index === currentIndex && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50">
+                    <div className="w-10 h-10 border-4 border-toby-green-500 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+                {visibleImages.includes(index) && (
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-full object-contain"
+                    onLoad={() => handleImageLoad(index)}
+                    loading={index === currentIndex ? "eager" : "lazy"}
+                  />
+                )}
               </div>
             ))}
 
@@ -261,12 +337,28 @@ export default function Journey() {
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
+
+            {/* 滑动指示器 - 移动端 */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 md:hidden">
+              {journeyImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    index === currentIndex 
+                      ? "bg-toby-green-500 w-4" 
+                      : "bg-white/50"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Thumbnail navigation - 缩略图导航 */}
           <div 
             ref={thumbnailsRef}
-            className="flex justify-start mt-4 sm:mt-6 gap-2 sm:gap-3 overflow-x-auto py-2 sm:py-3 px-8 sm:px-12 scroll-smooth hide-scrollbar cursor-grab relative"
+            className="hidden md:flex justify-start mt-4 sm:mt-6 gap-2 sm:gap-3 overflow-x-auto py-2 sm:py-3 px-8 sm:px-12 scroll-smooth hide-scrollbar cursor-grab relative"
           >
             {journeyImages.map((image, index) => (
               <button
@@ -279,17 +371,22 @@ export default function Journey() {
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               >
-                <img
-                  src={image.src}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="w-full h-full object-cover pointer-events-none"
-                />
+                <div className="w-full h-full bg-gray-800 relative">
+                  {visibleImages.includes(index) && (
+                    <img
+                      src={image.src}
+                      alt={`Thumbnail ${index + 1}`}
+                      className="w-full h-full object-cover pointer-events-none"
+                      loading="lazy"
+                    />
+                  )}
+                </div>
               </button>
             ))}
           </div>
           
-          {/* Scroll indicators for thumbnails - 缩略图滚动指示器 */}
-          <div className="flex justify-between absolute bottom-4 left-0 right-0 px-2 sm:px-3 z-10 pointer-events-none">
+          {/* Scroll indicators for thumbnails - 缩略图滚动指示器 - 仅在非移动端显示 */}
+          <div className="hidden md:flex justify-between absolute bottom-4 left-0 right-0 px-2 sm:px-3 z-10 pointer-events-none">
             <button 
               onClick={() => scrollThumbnails('left')}
               className="text-white bg-black/40 p-1 sm:p-2 rounded-full opacity-70 hover:opacity-100 hover:bg-black/60 transition-all duration-300 pointer-events-auto"

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * 网站英雄/主视觉区域组件
@@ -12,6 +12,7 @@ import { useState } from "react";
  */
 export default function Hero() {
   const [copied, setCopied] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const contractAddress = "Hxh5JQY45Aas92Ag3KTeZfcxQf1hnD1ZpoMk5cKBpump";
 
   const copyToClipboard = () => {
@@ -20,46 +21,60 @@ export default function Hero() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // 预加载主图
+  useEffect(() => {
+    const img = new window.Image();
+    img.src = "/BOLD/images/1.png";
+    img.onload = () => setImageLoaded(true);
+  }, []);
+
   return (
-    <div className="bg-toby-black py-24 px-4">
+    <div className="bg-toby-black py-16 md:py-24 px-4">
       <div className="container mx-auto max-w-5xl">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
           <div className="max-w-xl">
-            <h1 className="text-toby-yellow-500 font-archivo text-4xl md:text-5xl mb-6 animate-fade-up">
+            <h1 className="text-toby-yellow-500 font-archivo text-3xl sm:text-4xl md:text-5xl mb-4 md:mb-6 animate-fade-up">
               MEET $BOLD
             </h1>
             <p className="text-white font-montserrat leading-relaxed mb-6 animate-fade-up delay-200">
               In a highly rotational PVP environment filled with pumps and dumps, BOLD is a different coin, committed to seeing BOLD live a long and prosperous life with all his fans.
             </p>
           </div>
-          <div className="w-full max-w-xs relative aspect-square animate-scale-in delay-300">
+          <div className="w-full max-w-[240px] sm:max-w-xs relative aspect-square animate-scale-in delay-300">
             <div className="absolute w-[110%] h-[110%] top-[-5%] left-[-5%] rounded-full bg-toby-green-500/10 animate-pulse"></div>
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-toby-black/20 rounded-full">
+                <div className="w-10 h-10 border-4 border-toby-green-500 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
             <Image
               src="/BOLD/images/1.png"
               alt="BOLD the Turtle"
               fill
-              sizes="(max-width: 768px) 100vw, 300px"
+              sizes="(max-width: 640px) 240px, (max-width: 768px) 280px, 300px"
               priority
-              className="object-contain relative z-10"
+              className={`object-contain relative z-10 ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+              onLoad={() => setImageLoaded(true)}
             />
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-10 animate-fade-up delay-400">
-          <Link href="https://t.me/tobyportalxyz" target="_blank">
-            <Button variant="outline" size="lg">
+        {/* 移动端优化的按钮布局 */}
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-8 sm:mt-10 animate-fade-up delay-400">
+          <Link href="https://t.me/tobyportalxyz" target="_blank" className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" className="w-full py-3 sm:py-4 text-base">
               TELEGRAM
             </Button>
           </Link>
-          <Link href="https://dexscreener.com/solana/8bjikkzel672yumyoznuda66aj4t8wjczk4pblmvucuu" target="_blank">
-            <Button variant="secondary" size="lg">
+          <Link href="https://dexscreener.com/solana/8bjikkzel672yumyoznuda66aj4t8wjczk4pblmvucuu" target="_blank" className="w-full sm:w-auto">
+            <Button variant="secondary" size="lg" className="w-full py-3 sm:py-4 text-base">
               DEXSCREENER
             </Button>
           </Link>
         </div>
         
-        {/* Twitter按钮 */}
-        <div className="flex justify-center mt-8 animate-fade-up delay-500">
+        {/* Twitter按钮 - 移到按钮组内 */}
+        <div className="flex justify-center mt-5 sm:mt-8 animate-fade-up delay-500">
           <Link href="https://twitter.com/boldsolana" target="_blank">
             <Button variant="outline" size="icon" className="rounded-full w-12 h-12 bg-transparent border border-white text-white hover:bg-gray-800 hover:text-white transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -70,18 +85,18 @@ export default function Hero() {
           </Link>
         </div>
         
-        {/* Contract Address Display */}
-        <div className="flex justify-center mt-6 animate-fade-up delay-600 px-2 sm:px-0">
-          <div className="bg-toby-black/60 border border-toby-green-900/30 rounded-lg p-3 sm:p-4 w-full max-w-md backdrop-blur-sm shadow-lg">
+        {/* Contract Address Display - 移动端优化 */}
+        <div className="flex justify-center mt-6 animate-fade-up delay-600 px-0">
+          <div className="bg-toby-black/60 border border-toby-green-900/30 rounded-lg p-3 sm:p-4 w-full max-w-[340px] sm:max-w-md backdrop-blur-sm shadow-lg">
             <div className="text-center mb-2">
               <span className="text-toby-green-400 font-archivo text-xs sm:text-sm">CONTRACT ADDRESS</span>
             </div>
             <div 
-              className="bg-toby-darkbg rounded-md py-2 px-3 sm:p-3 flex items-center justify-between cursor-pointer group hover:bg-toby-darkbg/80 transition-colors"
+              className="bg-toby-darkbg rounded-md py-3 px-3 sm:p-3 flex items-center justify-between cursor-pointer group hover:bg-toby-darkbg/80 transition-colors"
               onClick={copyToClipboard}
             >
               <p className="text-gray-300 font-mono text-xs sm:text-sm truncate w-[calc(100%-36px)]">{contractAddress}</p>
-              <button className="ml-2 sm:ml-3 text-toby-green-400 hover:text-toby-green-500 transition-colors flex-shrink-0">
+              <button className="ml-2 sm:ml-3 text-toby-green-400 hover:text-toby-green-500 transition-colors flex-shrink-0 p-1">
                 {copied ? (
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px]">
                     <polyline points="20 6 9 17 4 12"></polyline>
