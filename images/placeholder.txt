@@ -1,0 +1,18 @@
+请将以下图片下载到此目录：
+
+1. toby-hero.jpg - 英雄区域主图片
+2. toby-journey-1.jpg - 旅程轮播图片1
+3. toby-journey-2.jpg - 旅程轮播图片2
+4. toby-journey-3.jpg - 旅程轮播图片3
+5. toby-journey-4.jpg - 旅程轮播图片4
+6. toby-journey-5.jpg - 旅程轮播图片5
+7. toby-music.jpg - 音乐专辑封面
+8. toby-roadmap-1.jpg - 路线图图片1
+9. toby-roadmap-2.jpg - 路线图图片2
+10. toby-roadmap-3.jpg - 路线图图片3
+
+请将图片保存为JPG或PNG格式，推荐尺寸：
+- 英雄区域图片: 600x600像素
+- 轮播图片: 1200x900像素（4:3比例）
+- 音乐封面: 800x800像素
+- 路线图图片: 600x600像素 
